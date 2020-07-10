@@ -4,7 +4,7 @@ Program to create a ics calendar based on course numbers (StFX only)
 #### Required libraries
 <ul>
   <li> pandas
-  <li> datetmie
+  <li> datetime
 </ul>
 
 #### StFX full course calendar
