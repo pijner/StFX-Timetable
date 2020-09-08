@@ -2,13 +2,15 @@ from parseFiles import *
 from makeICS import Calendar, Event
 from datetime import datetime as dt, timedelta
 
+import numpy as np
+
 MY_CAL = Calendar()
 MY_SCHEDULE = getSchedule()
 COURSES = getCourses()
 T1_START_DATE = '14-Sep-2020'
 T1_END_DATE = '3-Dec-2020'
-T2_START_DATE = '6-Jan-2020'
-T2_END_DATE = '8-Apr-2020'
+T2_START_DATE = '6-Jan-2021'
+T2_END_DATE = '8-Apr-2021'
 
 
 def insertCourse(crn):
@@ -22,7 +24,10 @@ def insertCourse(crn):
     timeBlock = list(thisCourse['TIMEBLOCK'])[0].split('/')
     if timeBlock == 'TBA':
         print("Skipping course {} since time block is TBA".format(thisCourse['COURSE']))
-    term = int(list(thisCourse['TERM'])[0][0])
+    if list(thisCourse['TERM'])[0][0] == 'F':
+        term = 3
+    else:
+        term = int(list(thisCourse['TERM'])[0][0])
 
     for block in timeBlock:
         # Create event for calendar
@@ -47,7 +52,7 @@ def getTime(block, term):
     for more information on timeblocks, see
         https://www2.mystfx.ca/sites/mystfx.ca.registrars-office/files/Final_202110%20Adjusted%20Grid%20-%20Updated.pdf
     :param block: string indicating block from StFX's timeblock
-    :param term: integer indicating term (1 for term 1, 2 for term 2)
+    :param term: integer indicating term (1 for term 1, 2 for term 2, 3 for full year)
     :return: list containing start and end time of first class of the course. The times are in datetime format
              list also contains a string containing first two characters of the day of the timeblock
     """
@@ -74,4 +79,3 @@ if __name__ == '__main__':
         insertCourse(int(crn))
 
     MY_CAL.writefile()
-    
